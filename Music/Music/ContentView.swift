@@ -168,25 +168,23 @@ struct Home: View {
 
         // FIRST ATTEMPT to use AnimatableVector & AnimatableGraph
         
-//        struct DemoChart {
-//            var vector: AnimatableVector
-//            
-//            let areaGradient = LinearGradient(gradient: Gradient(colors: [Color.red.opacity(0.1), Color.blue.opacity(0.4)]), startPoint: UnitPoint(x: 0, y: 0), endPoint: UnitPoint(x: 0, y: 1))
-//            let lineGradient = LinearGradient(gradient: Gradient(colors: [Color.white, Color.orange]), startPoint: UnitPoint(x: 0, y: 0), endPoint: UnitPoint(x: 1, y: 0))
-//
-//
-//            
-//            var chart: some View {
-//                let overlayLine = AnimatableGraph(controlPoints: CGFloat(FFTView.amplitudes), closedArea: false)
-//                    
-//                return
-//                    AnimatableGraph(controlPoints: CGFloat(FFTView.amplitudes), closedArea: true)
-//                    .fill(areaGradient)
-//                    .overlay(overlayLine)
-//                    .stroke(lineGradient, lineWidth: 3)
-//                
-//            }
-//        }
+
+        struct AmplitudesChart: View {
+            var amplitudes: [Double]
+            
+            let areaGradient = LinearGradient(gradient: Gradient(colors: [Color.red.opacity(0.1), Color.blue.opacity(0.4)]), startPoint: UnitPoint(x: 0, y: 0), endPoint: UnitPoint(x: 0, y: 1))
+            let lineGradient = LinearGradient(gradient: Gradient(colors: [Color.white, Color.orange]), startPoint: UnitPoint(x: 0, y: 0), endPoint: UnitPoint(x: 1, y: 0))
+            
+            var body: some View {
+                let overlayLine = AnimatableGraph(controlPoints: AnimatableVector(with: amplitudes), closedArea: false)
+                    .stroke(lineGradient, lineWidth: 2)
+                return
+                    AnimatableGraph(controlPoints: AnimatableVector(with: amplitudes), closedArea: true)
+                        .fill(areaGradient)
+                        .overlay(overlayLine)
+                    .animation(.easeInOut(duration: 0.1))
+            }
+        }
         
         
         // default gradients
@@ -296,13 +294,17 @@ struct Home: View {
                 VStack(spacing: 0){
                     
 
-                    ZStack{
+                    AmplitudesChart(amplitudes: conductor.amplitudes)
+                    .frame(width: fullWidth, height: 100)
+                    /*
+                     ZStack{
                         //Color.black.opacity(100)
                             //.edgesIgnoringSafeArea(/*@START_MENU_TOKEN@*/.all/*@END_MENU_TOKEN@*/)
                         FFTView(amplitudes: conductor.amplitudes,
                                 linearGradient: LinearGradient(gradient: Gradient(colors: self.gradientA), startPoint: UnitPoint(x: 0, y: 0), endPoint: UnitPoint(x: 0, y: 1)))
                     }
                     .frame(width: fullWidth, height: 50)
+                     */
                     //.border(Color.black)
 
                     ZStack{
@@ -384,7 +386,7 @@ struct Home: View {
                         .frame(width: 85, height: 85)
                         .background(RadialGradient(gradient: Gradient(colors: [.gray, .black]), center: UnitPoint(x: 0.4, y: 0.4), startRadius: 5, endRadius: 30))
                         .opacity(0.3)
-                        .clipShape(Circle())    
+                        .clipShape(Circle())
                 }
                 
             }

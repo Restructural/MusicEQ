@@ -17,7 +17,7 @@ struct AnimatableGraph: Shape {
     }
     
     func point(index: Int, rect: CGRect) -> CGPoint {
-        let value = self.controlPoints.values[index]
+        let value = 1-self.controlPoints.values[index]
         let x = Double(index)/Double(self.controlPoints.values.count)*Double(rect.width)
         let y = Double(rect.height)*value
         return CGPoint(x: x, y: y)
